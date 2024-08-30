@@ -1,0 +1,48 @@
+p {
+    font-family: 'Open Sans', sans-serif;
+    line-height: 1.5;
+    text-align: justify; 
+}
+
+h2 {
+    font-family: 'PT Serif';
+    margin-top: 10px;
+    color: darkred;
+}
+
+img {
+    margin-top: 10px;
+    width: 680px;
+}
+  
+body {
+    background-color: lightgray;
+}
+
+.page {
+    width: 750px;
+    background-color: white;
+    margin: auto;
+    padding: 70px;
+    padding-top: 35px;
+}
+
+.vis-container {
+    width: 100%;
+}
+
+.pure-g {
+    margin-bottom: 25px;
+}
+
+.description-right {
+    padding-left: 15px;
+}
+
+.description-left {
+    padding-right: 15px;
+}
+
+.custom {
+    color: red;
+}
