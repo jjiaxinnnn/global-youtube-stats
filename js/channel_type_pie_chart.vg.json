@@ -1,0 +1,82 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 285,
+  "height": 250,
+  "title": { "text": ["Number of Top YouTubers per", "Channel Type (2023)"] },
+  "data": {"url": "https://raw.githubusercontent.com/jcha0157/assignment2/main/data/Global_YouTube_Statistics.csv"},
+  "transform": [
+      {
+          "joinaggregate": [{
+              "op": "count",
+              "field": "Youtuber",
+              "as": "total_youtubers"
+             }],
+             "groupby": []
+      },
+      {
+          "joinaggregate": [{
+              "op": "count",
+              "field": "Youtuber",
+              "as": "youtubers_per_channel"
+             }],
+             "groupby": ["channel_type"]
+      },
+      {
+          "calculate":"datum.youtubers_per_channel / datum.total_youtubers * 100",
+          "as":"Percentage"
+      }
+  ],
+  "encoding": {
+      "theta": {"aggregate": "count", "field": "Youtuber", "type": "quantitative", "stack": "normalize", "title": "Number of Top Creators"},
+      "color": {"field": "channel_type", "type": "nominal", "title": "Channel Type"},
+      "fillOpacity": {
+          "condition": {"param": "highlight", "value": 1},
+          "value": 0.2
+      },
+      "tooltip": [
+          {"field": "channel_type", "type": "nominal", "title": "Channel Type"},
+          {"field": "Youtuber", "aggregate": "count", "type": "quantitative", "title": "Number of Top Creators"}
+      ]
+  },
+  "layer": [
+      {
+          "mark": {"type": "arc", "innerRadius": 60, "padAngle": 0.01, "cornerRadius": 4, "outerRadius": 110}
+      },
+      {
+          "selection": {
+              "highlight": {
+              "type": "multi",
+              "fields": ["channel_type"],
+              "bind": "legend"
+              }
+          },
+          "mark": {"type": "text", "radius": 124},
+          "transform": [
+              {
+              "calculate": "format(datum.Percentage, '.0f') + '%'",
+              "as": "combined_percentage"
+              }
+          ],
+          "encoding": {
+              "text": {"field": "combined_percentage", "type": "nominal"},
+              "opacity": {
+                  "condition": {"param": "highlight", "value": 1},
+                  "value": 0.8
+              }
+          }
+      }
+  ],
+  "config": {
+    "view": {
+      "stroke": null
+    },
+   "legend": {
+      "titleFont": "PT Serif"
+    },
+    "title": {
+      "font": "PT Serif",
+      "fontSize": 16,
+      "fontWeight": 600
+    }
+  }
+}

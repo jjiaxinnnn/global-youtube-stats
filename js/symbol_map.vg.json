@@ -1,0 +1,132 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "width": 650,
+    "height": 350,
+    "title": "Number of Top Creators and Total Upload Frequency in each Country (2023)",
+    "params": [
+      {
+        "name": "zoom_level",
+        "value": 120,
+        "bind": {
+          "input": "range",
+          "min": 120,
+          "max": 970,
+          "step": 50,
+          "name": "Zoom: "
+        }
+      },
+      {
+        "name": "center_to",
+        "value": [null, null],
+        "bind": {
+          "input": "select",
+          "options": [
+            [null, null],
+            [133.775136, -25.274398],
+            [-51.92528, -14.235004],
+            [78.96288, 20.593684],
+            [101.975766, 4.210484],
+            [105.318756, 61.52401],
+            [-3.435973, 55.378051],
+            [-95.712891, 37.09024]
+          ],
+          "labels": ["World", "Australia", "Brazil", "India", "Malaysia", "Russia", "United Kingdom", "United States"],
+          "name": "Map Center: "
+        }
+      }
+    ],
+    "projection": 
+      {
+        "type": "equalEarth",
+        "center": {"expr": "center_to"},
+        "scale": {"expr": "zoom_level"}
+      },
+    "layer": [
+      {
+        "data": {
+          "url": "https://raw.githubusercontent.com/jcha0157/assignment2/main/js/ne_110m_admin_0_countries.json",
+          "format": {"type": "topojson", "feature": "ne_110m_admin_0_countries"}
+        },
+        "mark": {"type": "geoshape", "fill": "lightgray", "stroke": "white"}
+      },
+      {
+      "data": {
+        "url": "https://raw.githubusercontent.com/jcha0157/assignment2/main/js/ne_110m_ocean.json",
+        "format": { "type": "topojson", "feature": "oceans" }
+      },
+      "mark": { "type": "geoshape", "fill": "skyblue" }
+      },
+      {
+        "data": {
+          "url": "https://raw.githubusercontent.com/jcha0157/assignment2/main/js/ne_110m_graticules_30.json",
+          "format": {"type": "topojson", "feature": "ne_110m_graticules_30"}
+        },
+        "mark": {"type": "geoshape", "fill": null, "stroke": "lightgray"}
+      },
+      {
+        "data": {
+          "url": "https://raw.githubusercontent.com/jcha0157/assignment2/main/data/Global_YouTube_Statistics.csv"
+        },
+        "mark": {"type": "circle"},
+        "encoding": {
+          "longitude": {"field": "Longitude", "type": "quantitative"},
+          "latitude": {"field": "Latitude", "type": "quantitative"},
+          "size": {
+            "aggregate": "count",
+            "field": "Youtuber",
+            "type": "quantitative",
+            "title": ["Number of Top", "Creators"],
+            "scale": {"type": "threshold", "domain": [1, 10, 50, 100, 300], "range": [20, 60, 150, 300, 450, 700]}
+          },
+          "color": {
+            "aggregate": "sum",
+            "field": "uploads",
+            "type": "quantitative",
+            "legend": {"format": ","},
+            "title": ["Total Upload", "Frequency"],
+            "scale": {"type": "threshold", "domain": [5000, 100000, 1000000], "range": ["#fdbe85", "#fd8d3c", "#e6550d", "#a63603"]}
+          },
+          "opacity": {"value": 0.9},
+          "tooltip": [
+            {"field": "Country", "type": "nominal", "title": "Country"},
+            {"field": "Youtuber", "aggregate": "count", "type": "quantitative", "title": "Number of Top Creators"},
+            {"field": "uploads", "aggregate": "sum", "type": "quantitative", "title": "Total Upload Frequency", "format": ","},
+            {"field": "Population", "type": "quantitative", "format": ","}
+          ]
+        }
+      },
+      {
+        "data": {
+          "url": "https://raw.githubusercontent.com/jcha0157/assignment2/main/data/Global_YouTube_Statistics.csv"
+        },
+        "mark": { "type": "text", "color": "black", "dy": -10, "dx": -15 },
+        "encoding": {
+          "longitude": { "field": "Longitude", "type": "quantitative" },
+          "latitude": { "field": "Latitude", "type": "quantitative" },
+          "text": { "field": "Country", "type": "nominal" },
+          "opacity": {
+            "condition": {
+              "test": "datum['Country'] == 'Australia' || datum['Country'] == 'Brazil' || datum['Country'] == 'India' || datum['Country'] == 'Malaysia' || datum['Country'] == 'Russia' || datum['Country'] == 'United Kingdom' || datum['Country'] == 'United States'",
+              "value": 1
+            },
+            "value": 0
+          }
+        }
+      }
+    ],
+    "config": {
+      "view": {
+        "stroke": null,
+        "continuousWidth": 800,
+        "continuousHeight": 400
+      },
+      "legend": {
+        "titleFont": "PT Serif"
+      },
+      "title": {
+        "font": "PT Serif",
+        "fontSize": 16,
+        "fontWeight": 600
+      }
+    }
+  }

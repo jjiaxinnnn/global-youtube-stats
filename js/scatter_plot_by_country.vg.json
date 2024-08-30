@@ -1,0 +1,189 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "width": 593,
+    "height": 500,
+    "title": { "text": "Upload Frequency vs Number of Subscribers (2023)" },
+    "data": {"url": "https://raw.githubusercontent.com/jcha0157/assignment2/main/data/Global_YouTube_Statistics.csv"},
+    "params": [
+        {
+            "name": "Country_selection",
+            "bind": {
+                "input": "select",
+                "options": [
+                    null,
+                    "Afghanistan",
+                    "Argentina",
+                    "Australia",
+                    "Bangladesh",
+                    "Barbados",
+                    "Brazil",
+                    "Canada",
+                    "Chile",
+                    "China",
+                    "Colombia",
+                    "Cuba",
+                    "Ecuador",
+                    "Egypt",
+                    "El Salvador",
+                    "Finland",
+                    "France",
+                    "Germany",
+                    "India",
+                    "Indonesia",
+                    "Iraq",
+                    "Italy",
+                    "Japan",
+                    "Jordan",
+                    "Kuwait",
+                    "Latvia",
+                    "Malaysia",
+                    "Mexico",
+                    "Morocco",
+                    "Netherlands",
+                    "Pakistan",
+                    "Peru",
+                    "Philippines",
+                    "Russia",
+                    "Samoa",
+                    "Saudi Arabia",
+                    "Singapore",
+                    "South Korea",
+                    "Spain",
+                    "Sweden",
+                    "Switzerland",
+                    "Thailand",
+                    "Turkey",
+                    "Ukraine",
+                    "United Arab Emirates",
+                    "United Kingdom",
+                    "United States",
+                    "Venezuela",
+                    "Vietnam"
+                ],
+                "labels": [
+                    "Show All",
+                    "Afghanistan",
+                    "Argentina",
+                    "Australia",
+                    "Bangladesh",
+                    "Barbados",
+                    "Brazil",
+                    "Canada",
+                    "Chile",
+                    "China",
+                    "Colombia",
+                    "Cuba",
+                    "Ecuador",
+                    "Egypt",
+                    "El Salvador",
+                    "Finland",
+                    "France",
+                    "Germany",
+                    "India",
+                    "Indonesia",
+                    "Iraq",
+                    "Italy",
+                    "Japan",
+                    "Jordan",
+                    "Kuwait",
+                    "Latvia",
+                    "Malaysia",
+                    "Mexico",
+                    "Morocco",
+                    "Netherlands",
+                    "Pakistan",
+                    "Peru",
+                    "Philippines",
+                    "Russia",
+                    "Samoa",
+                    "Saudi Arabia",
+                    "Singapore",
+                    "South Korea",
+                    "Spain",
+                    "Sweden",
+                    "Switzerland",
+                    "Thailand",
+                    "Turkey",
+                    "Ukraine",
+                    "United Arab Emirates",
+                    "United Kingdom",
+                    "United States",
+                    "Venezuela",
+                    "Vietnam"
+                ],
+                "name": "Select Country: "
+            }
+        },
+        {
+            "name": "paintbrush",
+            "select": {"type": "point", "on": "mouseover", "nearest": true}
+        },
+        {
+            "name": "search_input",
+            "bind": {
+              "input": "search",
+              "placeholder": "Youtuber Name",
+              "name": "Search: "
+            },
+            "value": ""
+        }
+    ],
+    "transform": [
+        {"filter": "Country_selection == null || datum.Country == Country_selection"},
+        {"filter": "datum.subscribers > 0"}, 
+        {"filter": "datum.uploads > 0"},
+        {"calculate": "datum.subscribers / 1000000", "as": "subscribers_in_millions"}
+    ],
+    "mark": "circle",
+    "encoding": {
+        "x": {
+            "field": "subscribers_in_millions",
+            "type": "quantitative",
+            "title": "Number of Subscribers (in millions)",
+            "axis": {"tickCount": 3},
+            "scale": {"type": "log", "base": 10, "domain": [1, 1000]}
+        },
+        "y": {
+            "field": "uploads", 
+            "type": "quantitative",
+            "title": "Upload Frequency",
+            "axis": {"tickCount": 6},
+            "scale": {"type": "log", "base": 10, "domain": [1, 1000000]}
+        },
+        "color": {"field": "channel_type", "type": "nominal", "title": "Channel Type"},
+        "size": {
+            "condition": {"param": "paintbrush", "value": 300},
+            "value": 50
+        },
+        "opacity": {
+            "condition": {
+              "test": "test(regexp(search_input,'i'), datum.Youtuber)",
+              "value": 0.9
+            },
+            "value": 0.1
+        },
+        "tooltip": [
+            {"field": "Youtuber", "type": "nominal"},
+            {"field": "subscribers", "type": "quantitative", "title": "Number of Subscribers", "format": ","},
+            {"field": "uploads", "type": "quantitative", "title": "Upload Frequency", "format": ","},
+            {"field": "Country", "type": "nominal"},
+            {"field": "channel_type", "type": "nominal", "title": "Channel Type"}
+        ]
+    },
+  "config": {
+    "view": {
+      "stroke": null
+    },
+    "legend": {
+        "titleFont": "PT Serif"
+    },
+    "axis": {
+      "titleFont": "PT Serif"
+    },
+    "title": {
+      "font": "PT Serif",
+      "fontSize": 16,
+      "fontWeight": 600
+    }
+  }
+}

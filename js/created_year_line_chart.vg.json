@@ -1,0 +1,97 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "width": 636,
+    "height": 250,
+    "title": { "text": "U.S. Top YouTubers' Created Years (2023)" },
+    "data": {"url": "https://raw.githubusercontent.com/jcha0157/assignment2/main/data/Global_YouTube_Statistics.csv"},
+    "transform": [{"filter": "datum.Country == 'United States'"}],
+    "layer": [
+      {
+        "mark": "rect",
+        "data": {
+          "values": [
+            {
+              "start": "2020",
+              "end": "2022",
+              "event": "Covid-19"
+            }
+          ]
+        },
+        "encoding": {
+          "x": {
+            "field": "start"
+          },
+          "x2": {
+            "field": "end"
+          },
+          "color": {"field": "event", "title": "Event", "type": "ordinal", "scale": {"type": "threshold", "range": ["#a63603"]}},
+          "opacity": {"value": 0.5}
+        }
+      },
+      {
+        "mark": "line",
+        "encoding": {
+          "x": {
+            "field": "created_year",
+            "type": "ordinal",
+            "title": "Created Year"
+          },
+          "y": {"aggregate": "count", "field": "Youtuber", "type": "quantitative", "title": "Number of Top Creators"},
+          "color": {"value": "#333"}
+        }
+      },
+      {
+        "mark": "point",
+        "encoding": {
+          "x": {
+            "field": "created_year",
+            "type": "ordinal"
+          },
+          "y": {"aggregate": "count", "field": "Youtuber", "type": "quantitative"},
+          "tooltip": [
+            {"field": "created_year", "type": "quantitative", "title": "Created Year"},
+            {"field": "Youtuber", "aggregate": "count", "type": "quantitative", "title": "Number of Top Creators"}
+          ],
+          "color": {"value": "#333"}
+        }
+      },
+      {
+        "mark": {"type": "text", "fontSize" : 11, "align" : "center", "fontWeight": "lighter"},
+        "encoding": {
+          "text": {"value": ["There is a significant growth of the YouTube creator community", "when the platform was in its early stages."]},
+          "x": {"value": 265},
+          "y": {"value": 40}
+        }
+      },
+      {
+        "mark": {
+          "type": "rule",
+          "color": "lightgrey"
+        },
+        "encoding": {
+          "x": {"value": 85},
+          "y": {"value": 5},
+          "x2": {"value": 240},
+          "y2": {"value": 33}
+        }
+      }
+    ],
+    "config": {
+      "view": {
+        "stroke": null
+      },
+      "axis": {
+        "titleFont": "PT Serif",
+        "labelAngle": 0
+      },
+      "legend": {
+        "titleFont": "PT Serif"
+      },
+      "title": {
+        "font": "PT Serif",
+        "fontSize": 16,
+        "fontWeight": 600
+      }
+    }
+  }
+  

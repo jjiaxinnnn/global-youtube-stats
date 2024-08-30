@@ -1,0 +1,117 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "width": 355,
+  "height": {"step": 40},
+  "title": { "text": ["Top 10 YouTubers with", "Highest Number of Subscribers (2023)"] },
+  "data": {"url": "https://raw.githubusercontent.com/jcha0157/assignment2/main/data/Global_YouTube_Statistics.csv"},
+  "transform": [
+    {"calculate": "toNumber(datum.subscribers)", "as": "numeric_subscribers"},
+    {
+      "window": [{
+        "op": "row_number",
+        "as": "rank"
+      }],
+      "sort": [{ "field": "numeric_subscribers", "order": "descending" }]
+    }, {
+      "filter": "datum.rank <= 10"
+    }
+  ],
+  "layer": [
+    {
+      "params": [
+        {
+          "name": "highlight",
+          "select": {"type": "point", "on": "mouseover"}
+        },
+        {"name": "select", "select": "point"}
+      ],
+      "mark":{"type": "bar", "color": "#a63603", "yOffset": 5, "cornerRadiusEnd": 2, "height": {"band": 0.5}, "stroke": "black", "cursor": "pointer"},
+      "encoding": {
+        "x": {
+          "field": "numeric_subscribers",
+          "type": "quantitative",
+          "title": "Number of Subscribers",
+          "axis": {"format": "s", "grid": false}
+        },
+        "y": {
+          "field": "Youtuber",
+          "type": "nominal",
+          "sort": "-x",
+          "title": "YouTuber",
+          "scale": {"padding": 0},
+          "axis": {
+            "bandPosition": 0,
+            "grid": true,
+            "domain": false,
+            "ticks": false,
+            "labelAlign": "left",
+            "labelBaseline": "middle",
+            "labelPadding": -5,
+            "labelOffset": -12,
+            "titleX": 5,
+            "titleY": -5,
+            "titleAngle": 0,
+            "titleAlign": "left"
+          }
+        },
+        "fillOpacity": {
+          "condition": {"param": "select", "value": 1},
+          "value": 0.2
+        },
+        "strokeWidth": {
+          "condition": [
+            {
+              "param": "select",
+              "empty": false,
+              "value": 2
+            },
+            {
+              "param": "highlight",
+              "empty": false,
+              "value": 1
+            }
+          ],
+          "value": 0
+        },
+        "tooltip": [
+          {"field": "Youtuber", "type": "nominal"},
+          {"field": "numeric_subscribers", "type": "quantitative", "title": "Number of Subscribers", "format": ","},
+          {"field": "Country", "type": "nominal"},
+          {"field": "channel_type", "type": "nominal", "title": "Channel Type"},
+          {"field": "highest_yearly_earnings", "type": "quantitative", "title": "Highest Yearly Earning", "format": ","},
+          {"field": "lowest_yearly_earnings", "type": "quantitative", "title": "Lowest Yearly Earning", "format": ","}
+        ]
+      }
+    },
+    {
+      "mark": {"type": "text", "fontSize" : 11, "align" : "center", "fontWeight": "lighter"},
+      "encoding": {
+        "text": {"value": ["The 'Bath Song' video", "is the most popular", "video from Cocomelon,", "with 4.7 billion views."]},
+        "x": {"value": 290},
+        "y": {"value": 155}
+      }
+    },
+    {
+      "mark": {
+        "type": "rule",
+        "color": "lightgrey"
+      },
+      "encoding": {
+        "x": {"value": 200},
+        "y": {"value": 108},
+        "x2": {"value": 260},
+        "y2": {"value": 145}
+      }
+    }
+  ],
+  "config": {
+      "axis": {
+        "titleFont": "PT Serif"
+      },
+      "title": {
+        "font": "PT Serif",
+        "fontSize": 16,
+        "fontWeight": 600
+      }
+    }
+}
