@@ -1,4 +1,4 @@
-# URL: https://jjiaxinnnn.github.io/html/
+# URL: https://jjiaxinnnn.github.io/global-youtube-stats/
 
 ## Domain
 The selected domain is Global YouTube Statistics, where data visualisation is used to represent the statistics of the most subscribed YouTube channels.
